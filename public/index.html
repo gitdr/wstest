@@ -28,7 +28,7 @@
       socket.onmessage = function(event) {
         console.log(event.data)
         log('MESSAGE: ' + event.data);
-        setTimeout(function() { socket.send(++index + ' ' + event.data) }, 2000);
+        // setTimeout(function() { socket.send(++index + ' ' + event.data) }, 2000);
       };
       socket.onclose = function(event) {
         log('CLOSE: ' + event.code + ', ' + event.reason);
