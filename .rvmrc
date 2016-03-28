@@ -1,1 +1,1 @@
-rvm use --create 'jruby-1.7.19'@wstest
+rvm use --create '2.2.3'@wstest

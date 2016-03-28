@@ -1,0 +1,7 @@
+AllCops:
+  Include:
+    - app.rb
+    - Rakefile
+
+Documentation:
+  Enabled: false

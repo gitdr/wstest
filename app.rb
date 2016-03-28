@@ -1,25 +1,28 @@
-require './sapp'
+require 'app/main'
 require 'faye/websocket'
 require 'eventmachine'
 require 'permessage_deflate'
 require 'amqp'
 require 'pp'
 
-options = {:extensions => [PermessageDeflate], :ping => 5}
+options = { extensions: [PermessageDeflate], ping: 5 }
 
 wapp = lambda do |env|
   if Faye::WebSocket.websocket?(env)
-    ws = Faye::WebSocket.new(env, ['irc', 'xmpp'], options)
+    ws = Faye::WebSocket.new(env, %w(irc xmpp), options)
 
     connection = nil
 
     begin
       EM.schedule do
-        connection = AMQP.connect(:host => '192.168.1.85')
+        connection = AMQP.connect(host: '192.168.1.85')
         channel  = AMQP::Channel.new(connection)
 
-        queue    = channel.queue("amqpgem.examples.hello_world", :auto_delete => true)
-        exchange = channel.default_exchange
+        queue    = channel.queue(
+          'amqpgem.examples.hello_world',
+          auto_delete: true
+        )
+        # exchange = channel.default_exchange
 
         queue.subscribe do |payload|
           ws.send(payload)
@@ -27,7 +30,7 @@ wapp = lambda do |env|
       end
     rescue ex
       pp ex
-    end  
+    end
 
     # p [:open, ws.url, ws.version, ws.protocol]
     ws.on :message do |event|
@@ -46,19 +49,18 @@ wapp = lambda do |env|
   else
 
     # Normal HTTP request
-    [200, {'Content-Type' => 'text/plain'}, ['Hello']]
-  
-  end
+    [200, { 'Content-Type' => 'text/plain' }, ['Hello']]
 
+  end
 end
 
 App = Rack::Builder.new do
   # use Rack::CommonLogger
   # use Rack::ShowExceptions
-  map "/" do
-    run SApp.new
+  map '/' do
+    run Main.new
   end
-  map "/ws" do
+  map '/ws' do
     run wapp
   end
 end
