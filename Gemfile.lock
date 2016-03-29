@@ -13,6 +13,8 @@ GEM
     faye-websocket (0.10.3)
       eventmachine (>= 0.12.0)
       websocket-driver (>= 0.5.1)
+    haml (4.0.7)
+      tilt
     parser (2.3.0.7)
       ast (~> 2.2)
     permessage_deflate (0.1.2)
@@ -42,6 +44,7 @@ GEM
       ruby-progressbar (~> 1.7)
       unicode-display_width (~> 1.0, >= 1.0.1)
     ruby-progressbar (1.7.5)
+    sass (3.4.21)
     sinatra (1.4.7)
       rack (~> 1.5)
       rack-protection (~> 1.4)
@@ -59,12 +62,15 @@ DEPENDENCIES
   amqp
   bunny
   faye-websocket
+  haml
   permessage_deflate
   puma
   rack
   rspec
   rubocop
+  sass
   sinatra
+  tilt
 
 BUNDLED WITH
    1.10.6

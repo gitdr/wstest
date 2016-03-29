@@ -18,13 +18,16 @@ wapp = lambda do |env|
         connection = AMQP.connect(host: '192.168.1.85')
         channel  = AMQP::Channel.new(connection)
 
-        queue    = channel.queue(
-          'amqpgem.examples.hello_world',
-          auto_delete: true
-        )
+        exchange = channel.fanout("amq.fanout", :nowait => true)
+        queue = AMQP::Queue.new(channel, "", :auto_delete => true)
+
+        # queue    = channel.queue(
+        #   'amqpgem.examples.hello_world',
+        #   auto_delete: true
+        # )
         # exchange = channel.default_exchange
 
-        queue.subscribe do |payload|
+        queue.bind(exchange).subscribe do |payload|
           ws.send(payload)
         end
       end
